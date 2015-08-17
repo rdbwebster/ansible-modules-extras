@@ -427,8 +427,7 @@ def create_vm(vca=None, module=None):
             vdc_name = module.params.get('service_id')
     task = vca.create_vapp(vdc_name, vapp_name, template_name, catalog_name, vm_name=None)
     if not task:
-        catalogs = get_catalogs(vca) 
-        module.fail_json(msg="Error in Creating VM, Please check catalog or template, Available catalogs and templates are as above or check the error field", catalogs=catalogs, errors=vca.response.content)
+        module.fail_json(msg="Error in Creating VM, Please check logs", errors=vca.response.content)
     if not vca.block_until_completed(task):
         module.fail_json(msg = "Error in waiting for VM Creation, Please check logs", errors=vca.response.content)
     vdc = vca.get_vdc(vdc_name)
